@@ -1,0 +1,47 @@
+# Nacos Dev命名空间共享配置
+# 此文件需要在Nacos控制台 -> 配置管理 -> dev命名空间下创建
+
+# Data ID: application-dev.yml
+# Group: DEFAULT_GROUP
+
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    timeout: 10s
+    lettuce:
+      pool:
+        max-active: 200
+        max-idle: 50
+        min-idle: 10
+        max-wait: 3000ms
+
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+      web-stat-filter:
+        enabled: true
+      filter:
+        stat:
+          enabled: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    com.ruoyi: debug
+    com.jn.erp: debug
+
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 60000

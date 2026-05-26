@@ -1,0 +1,38 @@
+# Maven
+target/
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Node
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.bak
+*.swp
+_ruoyi-cloud-src/
+
+# Docker volumes
+docker/data/
+
+# Env
+.env
+.env.local
+.env.*.local
