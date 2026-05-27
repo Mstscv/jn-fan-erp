@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.routing.mapper.JnRoutingLineMapper">
+
+    <resultMap id="JnRoutingLineResult" type="com.jn.erp.production.routing.domain.JnRoutingLine">
+        <id property="lineId" column="line_id"/>
+        <result property="routingId" column="routing_id"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationCode" column="operation_code"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="seqNo" column="seq_no"/>
+        <result property="workCenterId" column="work_center_id"/>
+        <result property="nextOperationId" column="next_operation_id"/>
+        <result property="standardTime" column="standard_time"/>
+        <result property="setupTime" column="setup_time"/>
+        <result property="minLeadTime" column="min_lead_time"/>
+        <result property="maxLeadTime" column="max_lead_time"/>
+        <result property="parallelFlag" column="parallel_flag"/>
+        <result property="isKeyOperation" column="is_key_operation"/>
+        <result property="transferBatchQty" column="transfer_batch_qty"/>
+        <result property="description" column="description"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectRoutingLineVo">
+        SELECT line_id, routing_id, operation_id, operation_code, operation_name,
+               seq_no, work_center_id, next_operation_id, standard_time, setup_time,
+               min_lead_time, max_lead_time, parallel_flag, is_key_operation,
+               transfer_batch_qty, description, sort_order,
+               create_by, create_time, update_by, update_time
+        FROM jn_routing_line
+    </sql>
+
+    <select id="selectByRoutingId" parameterType="Long" resultMap="JnRoutingLineResult">
+        <include refid="selectRoutingLineVo"/>
+        WHERE routing_id = #{routingId}
+        ORDER BY sort_order ASC
+    </select>
+
+    <delete id="deleteByRoutingId" parameterType="Long">
+        DELETE FROM jn_routing_line WHERE routing_id = #{routingId}
+    </delete>
+
+</mapper>

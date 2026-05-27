@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.defect.mapper.JnReworkOrderMapper">
+    <resultMap id="JnReworkOrderResult" type="com.jn.erp.production.defect.domain.JnReworkOrder">
+        <id property="reworkId" column="rework_id"/>
+        <result property="defectId" column="defect_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="reworkNo" column="rework_no"/>
+        <result property="reworkType" column="rework_type"/>
+        <result property="description" column="description"/>
+        <result property="assignedTo" column="assigned_to"/>
+        <result property="status" column="status"/>
+        <result property="plannedStart" column="planned_start"/>
+        <result property="plannedEnd" column="planned_end"/>
+        <result property="actualStart" column="actual_start"/>
+        <result property="actualEnd" column="actual_end"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <sql id="selectReworkOrderVo">
+        SELECT rework_id, defect_id, order_id, order_no,
+               operation_id, operation_name, rework_no, rework_type,
+               description, assigned_to, status,
+               planned_start, planned_end, actual_start, actual_end, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_rework_order
+    </sql>
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnReworkOrderResult">
+        <include refid="selectReworkOrderVo"/>
+        WHERE order_id = #{orderId}
+    </select>
+    <select id="selectByDefectId" parameterType="Long" resultMap="JnReworkOrderResult">
+        <include refid="selectReworkOrderVo"/>
+        WHERE defect_id = #{defectId}
+    </select>
+</mapper>

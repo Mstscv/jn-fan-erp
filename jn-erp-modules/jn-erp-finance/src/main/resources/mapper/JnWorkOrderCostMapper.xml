@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.finance.costing.mapper.JnWorkOrderCostMapper">
+
+    <resultMap id="JnWorkOrderCostResult" type="com.jn.erp.finance.costing.domain.JnWorkOrderCost">
+        <id property="costId" column="cost_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="materialCostId" column="material_cost_id"/>
+        <result property="costType" column="cost_type"/>
+        <result property="costAmount" column="cost_amount"/>
+        <result property="costDate" column="cost_date"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectWorkOrderCostVo">
+        SELECT cost_id, order_id, order_no, material_cost_id, cost_type,
+               cost_amount, cost_date, status, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_work_order_cost
+    </sql>
+
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnWorkOrderCostResult">
+        <include refid="selectWorkOrderCostVo"/>
+        WHERE order_id = #{orderId}
+        ORDER BY cost_date DESC
+    </select>
+
+</mapper>

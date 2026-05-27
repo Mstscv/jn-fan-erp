@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.finance.cash.mapper.JnReceiptPaymentMapper">
+
+    <resultMap id="JnReceiptPaymentResult" type="com.jn.erp.finance.cash.domain.JnReceiptPayment">
+        <id property="slipId" column="slip_id"/>
+        <result property="slipNo" column="slip_no"/>
+        <result property="slipType" column="slip_type"/>
+        <result property="direction" column="direction"/>
+        <result property="amount" column="amount"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="paymentMethod" column="payment_method"/>
+        <result property="bankAccountId" column="bank_account_id"/>
+        <result property="bankAccountName" column="bank_account_name"/>
+        <result property="transactionDate" column="transaction_date"/>
+        <result property="receivableId" column="receivable_id"/>
+        <result property="payableId" column="payable_id"/>
+        <result property="status" column="status"/>
+        <result property="approvedBy" column="approved_by"/>
+        <result property="approvedTime" column="approved_time"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectReceiptPaymentVo">
+        SELECT slip_id, slip_no, slip_type, direction, amount,
+               customer_id, customer_name, supplier_id, supplier_name,
+               payment_method, bank_account_id, bank_account_name,
+               transaction_date, receivable_id, payable_id,
+               status, approved_by, approved_time, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_receipt_payment
+    </sql>
+
+    <select id="selectByDateRange" resultMap="JnReceiptPaymentResult">
+        <include refid="selectReceiptPaymentVo"/>
+        WHERE transaction_date >= #{startDate}
+        AND transaction_date &lt;= #{endDate}
+        ORDER BY transaction_date DESC
+    </select>
+
+    <select id="selectByCustomerOrSupplier" resultMap="JnReceiptPaymentResult">
+        <include refid="selectReceiptPaymentVo"/>
+        WHERE (customer_id = #{customerId} OR supplier_id = #{supplierId})
+        ORDER BY transaction_date DESC
+    </select>
+
+</mapper>

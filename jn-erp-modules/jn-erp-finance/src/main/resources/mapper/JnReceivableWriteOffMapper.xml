@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.finance.ar.mapper.JnReceivableWriteOffMapper">
+
+    <resultMap id="JnReceivableWriteOffResult" type="com.jn.erp.finance.ar.domain.JnReceivableWriteOff">
+        <id property="writeOffId" column="write_off_id"/>
+        <result property="receivableId" column="receivable_id"/>
+        <result property="receivableNo" column="receivable_no"/>
+        <result property="writeOffNo" column="write_off_no"/>
+        <result property="writeOffDate" column="write_off_date"/>
+        <result property="amount" column="amount"/>
+        <result property="paymentMethod" column="payment_method"/>
+        <result property="bankAccountId" column="bank_account_id"/>
+        <result property="bankAccountName" column="bank_account_name"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectWriteOffVo">
+        SELECT write_off_id, receivable_id, receivable_no, write_off_no, write_off_date,
+               amount, payment_method, bank_account_id, bank_account_name, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_receivable_write_off
+    </sql>
+
+    <select id="selectByReceivableId" parameterType="Long" resultMap="JnReceivableWriteOffResult">
+        <include refid="selectWriteOffVo"/>
+        WHERE receivable_id = #{receivableId}
+        ORDER BY write_off_date ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.bom.mapper.JnBomMaterialPriceMapper">
+
+    <select id="selectUnitPriceByMaterialId" parameterType="Long" resultType="java.math.BigDecimal">
+        SELECT unit_price FROM jn_material WHERE material_id = #{materialId} AND del_flag = '0'
+    </select>
+
+    <select id="selectBatchUnitPrice" resultType="com.jn.erp.production.bom.domain.JnBomMaterialPrice">
+        SELECT material_id, unit_price FROM jn_material
+        WHERE material_id IN
+        <foreach collection="materialIds" item="materialId" open="(" separator="," close=")">
+            #{materialId}
+        </foreach>
+        AND del_flag = '0'
+    </select>
+
+</mapper>

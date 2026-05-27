@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.bom.mapper.JnBomVersionMapper">
+
+    <resultMap id="JnBomVersionResult" type="com.jn.erp.production.bom.domain.JnBomVersion">
+        <id property="versionId" column="version_id"/>
+        <result property="bomId" column="bom_id"/>
+        <result property="version" column="version"/>
+        <result property="changeLog" column="change_log"/>
+        <result property="bomSnapshot" column="bom_snapshot"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <sql id="selectBomVersionVo">
+        SELECT version_id, bom_id, version, change_log, bom_snapshot, created_by, created_time
+        FROM jn_bom_version
+    </sql>
+
+</mapper>

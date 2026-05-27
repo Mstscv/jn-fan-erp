@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.finance.ap.mapper.JnPayableMapper">
+
+    <resultMap id="JnPayableResult" type="com.jn.erp.finance.ap.domain.JnPayable">
+        <id property="payableId" column="payable_id"/>
+        <result property="payableNo" column="payable_no"/>
+        <result property="sourceType" column="source_type"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="sourceNo" column="source_no"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="paidAmount" column="paid_amount"/>
+        <result property="balanceAmount" column="balance_amount"/>
+        <result property="currency" column="currency"/>
+        <result property="invoiceType" column="invoice_type"/>
+        <result property="invoiceNo" column="invoice_no"/>
+        <result property="invoiceDate" column="invoice_date"/>
+        <result property="dueDate" column="due_date"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectPayableVo">
+        SELECT payable_id, payable_no, source_type, source_id, source_no,
+               supplier_id, supplier_name, total_amount, paid_amount, balance_amount,
+               currency, invoice_type, invoice_no, invoice_date, due_date, status, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_payable
+    </sql>
+
+    <select id="selectBySupplier" parameterType="Long" resultMap="JnPayableResult">
+        <include refid="selectPayableVo"/>
+        WHERE supplier_id = #{supplierId}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectOverdue" parameterType="Integer" resultMap="JnPayableResult">
+        <include refid="selectPayableVo"/>
+        WHERE status IN ('PENDING', 'PARTIAL')
+        AND due_date IS NOT NULL
+        AND due_date &lt; DATE_SUB(CURDATE(), INTERVAL #{days} DAY)
+        ORDER BY due_date ASC
+    </select>
+
+    <select id="selectByStatus" parameterType="String" resultMap="JnPayableResult">
+        <include refid="selectPayableVo"/>
+        WHERE status = #{status}
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

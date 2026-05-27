@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.material.mapper.JnWorkOrderMaterialMapper">
+
+    <resultMap id="JnWorkOrderMaterialResult" type="com.jn.erp.production.material.domain.JnWorkOrderMaterial">
+        <id property="demandId" column="demand_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="lineId" column="line_id"/>
+        <result property="bomId" column="bom_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="unit" column="unit"/>
+        <result property="requiredQty" column="required_qty"/>
+        <result property="allocatedQty" column="allocated_qty"/>
+        <result property="pickedQty" column="picked_qty"/>
+        <result property="sourceType" column="source_type"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectMaterialVo">
+        SELECT demand_id, order_id, order_no, line_id, bom_id,
+               material_id, material_code, material_name, spec, unit,
+               required_qty, allocated_qty, picked_qty, source_type, status, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_work_order_material
+    </sql>
+
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnWorkOrderMaterialResult">
+        <include refid="selectMaterialVo"/>
+        WHERE order_id = #{orderId}
+        ORDER BY material_code ASC
+    </select>
+
+    <delete id="deleteByOrderId" parameterType="Long">
+        DELETE FROM jn_work_order_material WHERE order_id = #{orderId}
+    </delete>
+
+</mapper>

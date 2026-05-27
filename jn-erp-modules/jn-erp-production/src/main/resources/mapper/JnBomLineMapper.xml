@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.bom.mapper.JnBomLineMapper">
+
+    <resultMap id="JnBomLineResult" type="com.jn.erp.production.bom.domain.JnBomLine">
+        <id property="lineId" column="line_id"/>
+        <result property="bomId" column="bom_id"/>
+        <result property="parentLineId" column="parent_line_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="quantity" column="quantity"/>
+        <result property="unit" column="unit"/>
+        <result property="positionNo" column="position_no"/>
+        <result property="scrapRate" column="scrap_rate"/>
+        <result property="isOptional" column="is_optional"/>
+        <result property="optionalGroup" column="optional_group"/>
+        <result property="optionalRule" column="optional_rule"/>
+        <result property="defaultSelected" column="default_selected"/>
+        <result property="alternativeId" column="alternative_id"/>
+        <result property="effectiveDate" column="effective_date"/>
+        <result property="expireDate" column="expire_date"/>
+        <result property="remark" column="remark"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectBomLineVo">
+        SELECT line_id, bom_id, parent_line_id, material_id, material_code,
+               material_name, spec, quantity, unit, position_no, scrap_rate,
+               is_optional, optional_group, optional_rule, default_selected,
+               alternative_id, effective_date, expire_date, remark, sort_order,
+               create_by, create_time, update_by, update_time
+        FROM jn_bom_line
+    </sql>
+
+    <select id="selectByBomId" parameterType="Long" resultMap="JnBomLineResult">
+        <include refid="selectBomLineVo"/>
+        WHERE bom_id = #{bomId}
+        ORDER BY sort_order ASC
+    </select>
+
+    <select id="selectByParentLineId" parameterType="Long" resultMap="JnBomLineResult">
+        <include refid="selectBomLineVo"/>
+        WHERE parent_line_id = #{parentLineId}
+        ORDER BY sort_order ASC
+    </select>
+
+    <delete id="deleteByBomId" parameterType="Long">
+        DELETE FROM jn_bom_line WHERE bom_id = #{bomId}
+    </delete>
+
+    <delete id="deleteByBomIdList" parameterType="java.util.List">
+        DELETE FROM jn_bom_line WHERE bom_id IN
+        <foreach collection="bomIds" item="bomId" open="(" separator="," close=")">
+            #{bomId}
+        </foreach>
+    </delete>
+
+</mapper>

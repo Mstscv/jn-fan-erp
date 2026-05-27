@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.outsource.mapper.JnOutsourceReceiptLineMapper">
+
+    <resultMap id="JnOutsourceReceiptLineResult" type="com.jn.erp.production.outsource.domain.JnOutsourceReceiptLine">
+        <id property="lineId" column="line_id"/>
+        <result property="receiptId" column="receipt_id"/>
+        <result property="dispatchLineId" column="dispatch_line_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="unit" column="unit"/>
+        <result property="qty" column="qty"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="lineTotal" column="line_total"/>
+        <result property="batchNo" column="batch_no"/>
+        <result property="qcResult" column="qc_result"/>
+        <result property="remark" column="remark"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectReceiptLineVo">
+        SELECT line_id, receipt_id, dispatch_line_id, material_id, material_code, material_name,
+               spec, unit, qty, unit_price, line_total, batch_no, qc_result, remark, sort_order,
+               create_by, create_time, update_by, update_time
+        FROM jn_outsource_receipt_line
+    </sql>
+
+    <select id="selectByReceiptId" parameterType="Long" resultMap="JnOutsourceReceiptLineResult">
+        <include refid="selectReceiptLineVo"/>
+        WHERE receipt_id = #{receiptId}
+        ORDER BY sort_order ASC
+    </select>
+
+    <delete id="deleteByReceiptId" parameterType="Long">
+        DELETE FROM jn_outsource_receipt_line WHERE receipt_id = #{receiptId}
+    </delete>
+
+</mapper>

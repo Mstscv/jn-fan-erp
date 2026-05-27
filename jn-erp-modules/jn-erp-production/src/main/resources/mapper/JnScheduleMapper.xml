@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.schedule.mapper.JnScheduleMapper">
+
+    <resultMap id="JnScheduleResult" type="com.jn.erp.production.schedule.domain.JnSchedule">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationCode" column="operation_code"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="routingLineId" column="routing_line_id"/>
+        <result property="workCenterId" column="work_center_id"/>
+        <result property="workCenterCode" column="work_center_code"/>
+        <result property="workCenterName" column="work_center_name"/>
+        <result property="scheduledDate" column="scheduled_date"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="plannedDuration" column="planned_duration"/>
+        <result property="actualDuration" column="actual_duration"/>
+        <result property="seqNo" column="seq_no"/>
+        <result property="status" column="status"/>
+        <result property="priority" column="priority"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectScheduleVo">
+        SELECT schedule_id, order_id, order_no, operation_id, operation_code, operation_name,
+               routing_line_id, work_center_id, work_center_code, work_center_name,
+               scheduled_date, start_time, end_time, planned_duration, actual_duration,
+               seq_no, status, priority, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_schedule
+    </sql>
+
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnScheduleResult">
+        <include refid="selectScheduleVo"/>
+        WHERE order_id = #{orderId}
+        ORDER BY seq_no ASC
+    </select>
+
+    <select id="selectByWorkCenterAndDate" resultMap="JnScheduleResult">
+        <include refid="selectScheduleVo"/>
+        WHERE work_center_id = #{workCenterId}
+        AND scheduled_date = #{scheduledDate}
+        ORDER BY start_time ASC
+    </select>
+
+    <select id="selectByDateRange" resultMap="JnScheduleResult">
+        <include refid="selectScheduleVo"/>
+        WHERE scheduled_date >= #{startDate}
+        AND scheduled_date &lt;= #{endDate}
+        ORDER BY scheduled_date ASC, seq_no ASC
+    </select>
+
+</mapper>

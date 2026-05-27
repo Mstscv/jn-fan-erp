@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.material.mapper.JnMaterialCategoryMapper">
+
+    <resultMap id="JnMaterialCategoryResult" type="com.jn.erp.material.domain.JnMaterialCategory">
+        <id property="categoryId" column="category_id"/>
+        <result property="categoryCode" column="category_code"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="ancestors" column="ancestors"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectCategoryVo">
+        SELECT c.category_id, c.category_code, c.category_name,
+               c.parent_id, c.ancestors, c.order_num,
+               c.status, c.del_flag,
+               c.create_by, c.create_time, c.update_by, c.update_time, c.remark
+        FROM jn_material_category c
+    </sql>
+
+    <select id="selectListByParentId" parameterType="Long" resultMap="JnMaterialCategoryResult">
+        <include refid="selectCategoryVo"/>
+        WHERE c.del_flag = '0'
+        <if test="parentId != null">
+            AND (c.parent_id = #{parentId} OR FIND_IN_SET(#{parentId}, c.ancestors))
+        </if>
+        ORDER BY c.order_num ASC
+    </select>
+
+</mapper>

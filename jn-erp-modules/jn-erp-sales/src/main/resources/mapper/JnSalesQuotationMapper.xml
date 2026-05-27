@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.sales.quotation.mapper.JnSalesQuotationMapper">
+
+    <resultMap id="JnSalesQuotationResult" type="com.jn.erp.sales.quotation.domain.JnSalesQuotation">
+        <id property="quotationId" column="quotation_id"/>
+        <result property="quotationNo" column="quotation_no"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="salesman" column="salesman"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="validDays" column="valid_days"/>
+        <result property="validUntil" column="valid_until"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="remark" column="remark"/>
+        <result property="approveBy" column="approve_by"/>
+        <result property="approveTime" column="approve_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap id="JnSalesQuotationWithLinesResult" type="com.jn.erp.sales.quotation.domain.JnSalesQuotation"
+               extends="JnSalesQuotationResult">
+        <collection property="lines" ofType="com.jn.erp.sales.quotation.domain.JnQuotationLine"
+                    column="quotation_id" select="selectLinesByQuotationId"/>
+    </resultMap>
+
+    <resultMap id="JnQuotationLineResult" type="com.jn.erp.sales.quotation.domain.JnQuotationLine">
+        <id property="lineId" column="line_id"/>
+        <result property="quotationId" column="quotation_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="quantity" column="quantity"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="amount" column="amount"/>
+        <result property="remark" column="remark"/>
+        <result property="sortOrder" column="sort_order"/>
+    </resultMap>
+
+    <sql id="selectQuotationVo">
+        SELECT q.quotation_id, q.quotation_no, q.customer_id, q.customer_name,
+               q.salesman, q.total_amount, q.valid_days, q.valid_until,
+               q.status, q.del_flag, q.remark,
+               q.approve_by, q.approve_time,
+               q.create_by, q.create_time, q.update_by, q.update_time
+        FROM jn_sales_quotation q
+    </sql>
+
+    <select id="selectById" parameterType="Long" resultMap="JnSalesQuotationWithLinesResult">
+        <include refid="selectQuotationVo"/>
+        WHERE q.quotation_id = #{quotationId}
+    </select>
+
+    <select id="selectLinesByQuotationId" parameterType="Long" resultMap="JnQuotationLineResult">
+        SELECT line_id, quotation_id, material_id, material_code, material_name,
+               spec, quantity, unit_price, amount, remark, sort_order
+        FROM jn_quotation_line
+        WHERE quotation_id = #{quotationId}
+        ORDER BY sort_order ASC
+    </select>
+
+</mapper>

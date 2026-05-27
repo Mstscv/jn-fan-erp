@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.outsource.mapper.JnOutsourceReceiptMapper">
+
+    <resultMap id="JnOutsourceReceiptResult" type="com.jn.erp.production.outsource.domain.JnOutsourceReceipt">
+        <id property="receiptId" column="receipt_id"/>
+        <result property="receiptNo" column="receipt_no"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="receiptDate" column="receipt_date"/>
+        <result property="warehouseId" column="warehouse_id"/>
+        <result property="warehouseName" column="warehouse_name"/>
+        <result property="status" column="status"/>
+        <result property="inspectionId" column="inspection_id"/>
+        <result property="totalQty" column="total_qty"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectReceiptVo">
+        SELECT receipt_id, receipt_no, order_id, order_no,
+               supplier_id, supplier_name, receipt_date,
+               warehouse_id, warehouse_name, status, inspection_id,
+               total_qty, total_amount, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_outsource_receipt
+    </sql>
+
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnOutsourceReceiptResult">
+        <include refid="selectReceiptVo"/>
+        WHERE order_id = #{orderId}
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.quality.mapper.JnInspectionStandardMapper">
+
+    <resultMap id="JnInspectionStandardResult" type="com.jn.erp.production.quality.domain.JnInspectionStandard">
+        <id property="standardId" column="standard_id"/>
+        <result property="standardCode" column="standard_code"/>
+        <result property="standardName" column="standard_name"/>
+        <result property="standardType" column="standard_type"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="inspectionType" column="inspection_type"/>
+        <result property="checkItem" column="check_item"/>
+        <result property="specValue" column="spec_value"/>
+        <result property="upperLimit" column="upper_limit"/>
+        <result property="lowerLimit" column="lower_limit"/>
+        <result property="unit" column="unit"/>
+        <result property="samplingMethod" column="sampling_method"/>
+        <result property="sampleSize" column="sample_size"/>
+        <result property="isActive" column="is_active"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectStandardVo">
+        SELECT standard_id, standard_code, standard_name, standard_type,
+               material_id, material_code, material_name,
+               operation_id, operation_name, inspection_type,
+               check_item, spec_value, upper_limit, lower_limit, unit,
+               sampling_method, sample_size, is_active, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_inspection_standard
+    </sql>
+
+    <select id="selectByMaterialOrOperation" resultMap="JnInspectionStandardResult">
+        <include refid="selectStandardVo"/>
+        WHERE is_active = 'Y'
+        AND (inspection_type = 'ALL' OR inspection_type = #{inspectionType})
+        AND (material_id IS NULL OR material_id = #{materialId})
+        AND (operation_id IS NULL OR operation_id = #{operationId})
+        ORDER BY standard_code ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.warehouse.wh.mapper.JnWarehouseMapper">
+
+    <resultMap id="JnWarehouseResult" type="com.jn.erp.warehouse.wh.domain.JnWarehouse">
+        <id property="whId" column="wh_id"/>
+        <result property="whCode" column="wh_code"/>
+        <result property="whName" column="wh_name"/>
+        <result property="whType" column="wh_type"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+</mapper>

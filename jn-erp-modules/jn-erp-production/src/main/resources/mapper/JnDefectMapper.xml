@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.defect.mapper.JnDefectMapper">
+    <resultMap id="JnDefectResult" type="com.jn.erp.production.defect.domain.JnDefect">
+        <id property="defectId" column="defect_id"/>
+        <result property="reportId" column="report_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="defectCode" column="defect_code"/>
+        <result property="defectName" column="defect_name"/>
+        <result property="defectType" column="defect_type"/>
+        <result property="defectQty" column="defect_qty"/>
+        <result property="severity" column="severity"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <sql id="selectDefectVo">
+        SELECT defect_id, report_id, order_id, order_no,
+               operation_id, operation_name, defect_code, defect_name,
+               defect_type, defect_qty, severity, description, status, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_defect
+    </sql>
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnDefectResult">
+        <include refid="selectDefectVo"/>
+        WHERE order_id = #{orderId}
+    </select>
+    <select id="selectByReportId" parameterType="Long" resultMap="JnDefectResult">
+        <include refid="selectDefectVo"/>
+        WHERE report_id = #{reportId}
+    </select>
+</mapper>

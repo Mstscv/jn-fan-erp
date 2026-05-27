@@ -1,38 +1,42 @@
-# Maven
-target/
+# JN-FAN-ERP .gitignore
+
+# Java
+*.class
 *.jar
 *.war
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Maven
+log/
+*.log
+*.pid
+pom.xml.versionsBackup
 
 # IDE
 .idea/
 *.iml
-.vscode/
+*.iws
+*.ipr
 .settings/
 .project
 .classpath
+.vscode/
+.sonarlint/
+
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini
 
 # Node
 node_modules/
 dist/
-
-# Logs
-logs/
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Temp
-*.tmp
-*.bak
-*.swp
-_ruoyi-cloud-src/
-
-# Docker volumes
-docker/data/
-
-# Env
-.env
 .env.local
 .env.*.local
+
+# Temp
+_ruoyi-cloud-src/
+setup.bat
+tmp/
+temp/

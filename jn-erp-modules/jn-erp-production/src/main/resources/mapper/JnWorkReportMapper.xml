@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.production.report.mapper.JnWorkReportMapper">
+    <resultMap id="JnWorkReportResult" type="com.jn.erp.production.report.domain.JnWorkReport">
+        <id property="reportId" column="report_id"/>
+        <result property="workerId" column="worker_id"/>
+        <result property="workerName" column="worker_name"/>
+        <result property="teamId" column="team_id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="durationMinutes" column="duration_minutes"/>
+        <result property="outputQty" column="output_qty"/>
+        <result property="goodQty" column="good_qty"/>
+        <result property="defectQty" column="defect_qty"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="reportDate" column="report_date"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <sql id="selectWorkReportVo">
+        SELECT report_id, worker_id, worker_name, team_id, team_name,
+               operation_id, operation_name, order_id, order_no,
+               duration_minutes, output_qty, good_qty, defect_qty,
+               start_time, end_time, report_date, status, remark,
+               create_by, create_time, update_by, update_time
+        FROM jn_work_report
+    </sql>
+    <select id="selectByOrderId" parameterType="Long" resultMap="JnWorkReportResult">
+        <include refid="selectWorkReportVo"/>
+        WHERE order_id = #{orderId}
+        ORDER BY start_time ASC
+    </select>
+    <select id="selectByWorkerId" resultMap="JnWorkReportResult">
+        <include refid="selectWorkReportVo"/>
+        WHERE worker_id = #{workerId}
+        AND start_time >= #{startDate}
+        AND start_time &lt; #{endDate}
+        ORDER BY start_time DESC
+    </select>
+</mapper>

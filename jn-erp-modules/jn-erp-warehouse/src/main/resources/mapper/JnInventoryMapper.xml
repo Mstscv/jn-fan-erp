@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jn.erp.warehouse.inventory.mapper.JnInventoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.jn.erp.warehouse.inventory.domain.JnInventory">
+        <id property="inventoryId" column="inventory_id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="whId" column="wh_id"/>
+        <result property="batchNo" column="batch_no"/>
+        <result property="quantity" column="quantity"/>
+        <result property="lockedQty" column="locked_qty"/>
+        <result property="availableQty" column="available_qty"/>
+        <result property="safetyStock" column="safety_stock"/>
+        <result property="status" column="status"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        inventory_id, material_id, material_code, material_name, spec, wh_id,
+        batch_no, quantity, locked_qty, available_qty, safety_stock, status, update_time
+    </sql>
+
+    <select id="getInventory" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM jn_inventory
+        WHERE material_id = #{materialId}
+        AND wh_id = #{whId}
+        <if test="batchNo != null and batchNo != ''">
+            AND batch_no = #{batchNo}
+        </if>
+        <if test="batchNo == null or batchNo == ''">
+            AND (batch_no IS NULL OR batch_no = '')
+        </if>
+        LIMIT 1
+    </select>
+
+    <update id="addStock">
+        UPDATE jn_inventory
+        SET quantity = quantity + #{qty},
+            available_qty = available_qty + #{qty},
+            update_time = NOW()
+        WHERE material_id = #{materialId}
+        AND wh_id = #{whId}
+        <if test="batchNo != null and batchNo != ''">
+            AND batch_no = #{batchNo}
+        </if>
+        AND quantity + #{qty} >= 0
+    </update>
+
+    <update id="subtractStock">
+        UPDATE jn_inventory
+        SET quantity = quantity - #{qty},
+            available_qty = available_qty - #{qty},
+            update_time = NOW()
+        WHERE material_id = #{materialId}
+        AND wh_id = #{whId}
+        <if test="batchNo != null and batchNo != ''">
+            AND batch_no = #{batchNo}
+        </if>
+        AND available_qty >= #{qty}
+    </update>
+
+    <select id="selectBelowSafetyStockList" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM jn_inventory
+        WHERE safety_stock > 0
+        AND available_qty <![CDATA[ < ]]> safety_stock
+        ORDER BY (safety_stock - available_qty) DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jn.erp.material.mapper.JnMaterialMapper">
+
+    <resultMap id="JnMaterialResult" type="com.jn.erp.material.domain.JnMaterial">
+        <id property="materialId" column="material_id"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="spec" column="spec"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="unit" column="unit"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="safetyStock" column="safety_stock"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="fanType" column="fan_type"/>
+        <result property="fanModel" column="fan_model"/>
+        <result property="airflowCfm" column="airflow_cfm"/>
+        <result property="pressurePa" column="pressure_pa"/>
+        <result property="powerKw" column="power_kw"/>
+        <result property="rpm" column="rpm"/>
+        <result property="noiseDba" column="noise_dba"/>
+        <result property="impellerDiameter" column="impeller_diameter"/>
+        <result property="weightKg" column="weight_kg"/>
+        <result property="isConfigurable" column="is_configurable"/>
+        <result property="configRules" column="config_rules"/>
+        <result property="drawingNo" column="drawing_no"/>
+        <result property="version" column="version"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectMaterialVo">
+        SELECT m.material_id, m.material_code, m.material_name, m.spec,
+               m.category_id, m.category_name, m.unit, m.unit_price,
+               m.safety_stock, m.status, m.del_flag,
+               m.fan_type, m.fan_model, m.airflow_cfm, m.pressure_pa,
+               m.power_kw, m.rpm, m.noise_dba, m.impeller_diameter,
+               m.weight_kg, m.is_configurable, m.config_rules, m.drawing_no,
+               m.version, m.create_by, m.create_time, m.update_by,
+               m.update_time, m.remark
+        FROM jn_material m
+    </sql>
+
+    <select id="selectListWithFan" parameterType="com.jn.erp.material.domain.JnMaterial" resultMap="JnMaterialResult">
+        <include refid="selectMaterialVo"/>
+        LEFT JOIN jn_material_category c ON m.category_id = c.category_id
+        WHERE m.del_flag = '0'
+        <if test="material.materialCode != null and material.materialCode != ''">
+            AND m.material_code LIKE CONCAT('%', #{material.materialCode}, '%')
+        </if>
+        <if test="material.materialName != null and material.materialName != ''">
+            AND m.material_name LIKE CONCAT('%', #{material.materialName}, '%')
+        </if>
+        <if test="material.categoryId != null">
+            AND m.category_id = #{material.categoryId}
+        </if>
+        <if test="material.fanType != null and material.fanType != ''">
+            AND m.fan_type = #{material.fanType}
+        </if>
+        <if test="material.fanModel != null and material.fanModel != ''">
+            AND m.fan_model LIKE CONCAT('%', #{material.fanModel}, '%')
+        </if>
+        <if test="material.status != null and material.status != ''">
+            AND m.status = #{material.status}
+        </if>
+        ORDER BY m.material_code ASC
+    </select>
+
+    <select id="selectByMaterialCode" parameterType="String" resultMap="JnMaterialResult">
+        <include refid="selectMaterialVo"/>
+        WHERE m.material_code = #{materialCode} AND m.del_flag = '0'
+    </select>
+
+</mapper>

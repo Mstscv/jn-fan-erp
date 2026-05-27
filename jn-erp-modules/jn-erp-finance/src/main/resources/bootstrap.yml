@@ -1,0 +1,18 @@
+server:
+  port: 9212
+spring:
+  application:
+    name: jn-erp-finance
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/jn_erp?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
